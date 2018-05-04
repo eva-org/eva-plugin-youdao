@@ -1,2 +1,4 @@
 config.json
 test.json
+*.iml
+*.node_modules

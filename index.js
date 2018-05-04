@@ -1,6 +1,4 @@
-const clipboard = require('electron').clipboard
-
-const axios = require('axios')
+import axios from 'axios'
 
 const md5 = (str) => {
   const cr = require('crypto')
@@ -9,12 +7,12 @@ const md5 = (str) => {
   const result = md5.digest('hex')
   return result.toUpperCase()  //32位大写
 }
+
 const buildLine = (title, subTitle = '') => {
   return {
     title,
     subTitle,
     action() {
-      clipboard.writeText(title)
     }
   }
 }
