@@ -2,13 +2,13 @@
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var tty = _interopDefault(require('tty'));
-var util$1 = _interopDefault(require('util'));
-var url = _interopDefault(require('url'));
 var http = _interopDefault(require('http'));
 var https = _interopDefault(require('https'));
+var url = _interopDefault(require('url'));
 var assert = _interopDefault(require('assert'));
 var stream = _interopDefault(require('stream'));
+var tty = _interopDefault(require('tty'));
+var util = _interopDefault(require('util'));
 var zlib = _interopDefault(require('zlib'));
 
 var bind = function bind(fn, thisArg) {
@@ -427,10 +427,10 @@ function encode(val) {
  * @param {object} [params] The params to be appended
  * @returns {string} The formatted url
  */
-var buildURL = function buildURL(url$$1, params, paramsSerializer) {
+var buildURL = function buildURL(url, params, paramsSerializer) {
   /*eslint no-param-reassign:0*/
   if (!params) {
-    return url$$1;
+    return url;
   }
 
   var serializedParams;
@@ -466,10 +466,10 @@ var buildURL = function buildURL(url$$1, params, paramsSerializer) {
   }
 
   if (serializedParams) {
-    url$$1 += (url$$1.indexOf('?') === -1 ? '?' : '&') + serializedParams;
+    url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams;
   }
 
-  return url$$1;
+  return url;
 };
 
 // Headers whose duplicates are ignored by node
@@ -538,8 +538,8 @@ var isURLSameOrigin = (
     * @param {String} url The URL to be parsed
     * @returns {Object}
     */
-    function resolveURL(url$$1) {
-      var href = url$$1;
+    function resolveURL(url) {
+      var href = url;
 
       if (msie) {
         // IE needs attribute set twice to normalize properties
@@ -769,11 +769,11 @@ var xhr = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies$$1 = cookies;
+      var cookies$1 = cookies;
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
-          cookies$$1.read(config.xsrfCookieName) :
+          cookies$1.read(config.xsrfCookieName) :
           undefined;
 
       if (xsrfValue) {
@@ -1075,8 +1075,8 @@ function createDebug(namespace) {
 
     // set `diff` timestamp
     var curr = +new Date();
-    var ms$$1 = curr - (prevTime || curr);
-    self.diff = ms$$1;
+    var ms = curr - (prevTime || curr);
+    self.diff = ms;
     self.prev = prevTime;
     self.curr = curr;
     prevTime = curr;
@@ -1522,8 +1522,8 @@ exports.useColors = useColors;
 exports.colors = [ 6, 2, 3, 4, 5, 1 ];
 
 try {
-  var supportsColor$$1 = supportsColor;
-  if (supportsColor$$1 && supportsColor$$1.level >= 2) {
+  var supportsColor$1 = supportsColor;
+  if (supportsColor$1 && supportsColor$1.level >= 2) {
     exports.colors = [
       20, 21, 26, 27, 32, 33, 38, 39, 40, 41, 42, 43, 44, 45, 56, 57, 62, 63, 68,
       69, 74, 75, 76, 77, 78, 79, 80, 81, 92, 93, 98, 99, 112, 113, 128, 129, 134,
@@ -1578,7 +1578,7 @@ function useColors() {
 
 exports.formatters.o = function(v) {
   this.inspectOpts.colors = this.useColors;
-  return util$1.inspect(v, this.inspectOpts)
+  return util.inspect(v, this.inspectOpts)
     .split('\n').map(function(str) {
       return str.trim()
     }).join(' ');
@@ -1590,7 +1590,7 @@ exports.formatters.o = function(v) {
 
 exports.formatters.O = function(v) {
   this.inspectOpts.colors = this.useColors;
-  return util$1.inspect(v, this.inspectOpts);
+  return util.inspect(v, this.inspectOpts);
 };
 
 /**
@@ -1628,7 +1628,7 @@ function getDate() {
  */
 
 function log() {
-  return process.stderr.write(util$1.format.apply(util$1, arguments) + '\n');
+  return process.stderr.write(util.format.apply(util, arguments) + '\n');
 }
 
 /**
@@ -1666,12 +1666,12 @@ function load() {
  * differently for a particular `debug` instance.
  */
 
-function init (debug$$1) {
-  debug$$1.inspectOpts = {};
+function init (debug) {
+  debug.inspectOpts = {};
 
   var keys = Object.keys(exports.inspectOpts);
   for (var i = 0; i < keys.length; i++) {
-    debug$$1.inspectOpts[keys[i]] = exports.inspectOpts[keys[i]];
+    debug.inspectOpts[keys[i]] = exports.inspectOpts[keys[i]];
   }
 }
 
@@ -2003,24 +2003,25 @@ var _package = {
 	bundlesize: bundlesize
 };
 
-var _package$1 = Object.freeze({
-	name: name,
-	version: version,
-	description: description,
-	main: main,
-	scripts: scripts,
-	repository: repository,
-	keywords: keywords,
-	author: author,
-	license: license,
-	bugs: bugs,
-	homepage: homepage,
-	devDependencies: devDependencies,
-	browser: browser$1,
-	typings: typings,
-	dependencies: dependencies,
-	bundlesize: bundlesize,
-	default: _package
+var _package$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  name: name,
+  version: version,
+  description: description,
+  main: main,
+  scripts: scripts,
+  repository: repository,
+  keywords: keywords,
+  author: author,
+  license: license,
+  bugs: bugs,
+  homepage: homepage,
+  devDependencies: devDependencies,
+  browser: browser$1,
+  typings: typings,
+  dependencies: dependencies,
+  bundlesize: bundlesize,
+  'default': _package
 });
 
 var pkg = ( _package$1 && _package ) || _package$1;
@@ -2048,9 +2049,7 @@ var http_1 = function httpAdapter(config) {
     }
 
     if (data && !utils.isStream(data)) {
-      if (Buffer.isBuffer(data)) {
-        // Nothing to do...
-      } else if (utils.isArrayBuffer(data)) {
+      if (Buffer.isBuffer(data)) ; else if (utils.isArrayBuffer(data)) {
         data = new Buffer(new Uint8Array(data));
       } else if (utils.isString(data)) {
         data = new Buffer(data, 'utf-8');
@@ -2166,14 +2165,14 @@ var http_1 = function httpAdapter(config) {
       timer = null;
 
       // uncompress the response body transparently if required
-      var stream$$1 = res;
+      var stream = res;
       switch (res.headers['content-encoding']) {
       /*eslint default-case:0*/
       case 'gzip':
       case 'compress':
       case 'deflate':
         // add the unzipper to the body stream processing pipeline
-        stream$$1 = stream$$1.pipe(zlib.createUnzip());
+        stream = stream.pipe(zlib.createUnzip());
 
         // remove the content-encoding in order to not confuse downstream operations
         delete res.headers['content-encoding'];
@@ -2192,11 +2191,11 @@ var http_1 = function httpAdapter(config) {
       };
 
       if (config.responseType === 'stream') {
-        response.data = stream$$1;
+        response.data = stream;
         settle(resolve, reject, response);
       } else {
         var responseBuffer = [];
-        stream$$1.on('data', function handleStreamData(chunk) {
+        stream.on('data', function handleStreamData(chunk) {
           responseBuffer.push(chunk);
 
           // make sure the content length is not over the maxContentLength if specified
@@ -2206,12 +2205,12 @@ var http_1 = function httpAdapter(config) {
           }
         });
 
-        stream$$1.on('error', function handleStreamError(err) {
+        stream.on('error', function handleStreamError(err) {
           if (req.aborted) return;
           reject(enhanceError(err, config, null, lastRequest));
         });
 
-        stream$$1.on('end', function handleStreamEnd() {
+        stream.on('end', function handleStreamEnd() {
           var responseData = Buffer.concat(responseBuffer);
           if (config.responseType !== 'arraybuffer') {
             responseData = responseData.toString('utf8');
@@ -2424,11 +2423,11 @@ var isCancel = function isCancel(value) {
  * @param {string} url The URL to test
  * @returns {boolean} True if the specified URL is absolute, otherwise false
  */
-var isAbsoluteURL = function isAbsoluteURL(url$$1) {
+var isAbsoluteURL = function isAbsoluteURL(url) {
   // A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
   // RFC 3986 defines scheme name as a sequence of characters beginning with a letter and followed
   // by any combination of letters, digits, plus, period, or hyphen.
-  return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url$$1);
+  return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 };
 
 /**
@@ -2574,20 +2573,20 @@ Axios.prototype.request = function request(config) {
 // Provide aliases for supported request methods
 utils.forEach(['delete', 'get', 'head', 'options'], function forEachMethodNoData(method) {
   /*eslint func-names:0*/
-  Axios.prototype[method] = function(url$$1, config) {
+  Axios.prototype[method] = function(url, config) {
     return this.request(utils.merge(config || {}, {
       method: method,
-      url: url$$1
+      url: url
     }));
   };
 });
 
 utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
   /*eslint func-names:0*/
-  Axios.prototype[method] = function(url$$1, data, config) {
+  Axios.prototype[method] = function(url, data, config) {
     return this.request(utils.merge(config || {}, {
       method: method,
-      url: url$$1,
+      url: url,
       data: data
     }));
   };
@@ -2750,19 +2749,18 @@ const md5 = (str) => {
   return result.toUpperCase()  //32位大写
 };
 
-const buildLine = (title, subTitle = '') => {
+const buildLine = (title, subTitle = '', action = () => {}) => {
   return {
     title,
     subTitle,
-    action() {
-    }
+    action
   }
 };
 
 let timeout;
 let appKey, appSecret;
 
-function getData({query, utils: {logger}}) {
+function getData({query, utils: {logger}, clipboard}) {
   if (timeout) clearTimeout(timeout);
   return new Promise(resolve => {
     timeout = setTimeout(() => {
@@ -2784,10 +2782,14 @@ function getData({query, utils: {logger}}) {
         if (basic) {
           const {explains, phonetic} = basic;
           if (phonetic) {
-            resultList.push(buildLine(translate, `[${phonetic}]`));
+            resultList.push(buildLine(translate, `[${phonetic}]`, () => {
+              clipboard.writeText(translate);
+            }));
           }
-          explains.forEach(item => {
-            resultList.push(buildLine(item, query));
+          explains.forEach(translate => {
+            resultList.push(buildLine(translate, query, () => {
+              clipboard.writeText(translate);
+            }));
           });
         } else {
           // 查词失败
@@ -2797,7 +2799,9 @@ function getData({query, utils: {logger}}) {
             return resolve(resultList)
           }
           // 翻译成功
-          resultList.push(buildLine(translate, query));
+          resultList.push(buildLine(translate, query, () => {
+            clipboard.writeText(translate);
+          }));
         }
         resolve(resultList);
       });

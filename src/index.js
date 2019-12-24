@@ -8,19 +8,18 @@ const md5 = (str) => {
   return result.toUpperCase()  //32位大写
 }
 
-const buildLine = (title, subTitle = '') => {
+const buildLine = (title, subTitle = '', action = () => {}) => {
   return {
     title,
     subTitle,
-    action() {
-    }
+    action
   }
 }
 
 let timeout
 let appKey, appSecret
 
-function getData({query, utils: {logger}}) {
+function getData({query, utils: {logger}, clipboard}) {
   if (timeout) clearTimeout(timeout)
   return new Promise(resolve => {
     timeout = setTimeout(() => {
@@ -42,10 +41,14 @@ function getData({query, utils: {logger}}) {
         if (basic) {
           const {explains, phonetic} = basic
           if (phonetic) {
-            resultList.push(buildLine(translate, `[${phonetic}]`))
+            resultList.push(buildLine(translate, `[${phonetic}]`, () => {
+              clipboard.writeText(translate)
+            }))
           }
-          explains.forEach(item => {
-            resultList.push(buildLine(item, query))
+          explains.forEach(translate => {
+            resultList.push(buildLine(translate, query, () => {
+              clipboard.writeText(translate)
+            }))
           })
         } else {
           // 查词失败
@@ -55,7 +58,9 @@ function getData({query, utils: {logger}}) {
             return resolve(resultList)
           }
           // 翻译成功
-          resultList.push(buildLine(translate, query))
+          resultList.push(buildLine(translate, query, () => {
+            clipboard.writeText(translate)
+          }))
         }
         resolve(resultList)
       })
