@@ -1,31 +1,28 @@
 {
-  "name": "youdao-eva-plugin",
-  "version": "1.0.1",
+  "name": "youdao-aflred-plugin",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/eva-org/youdao-eva-plugin.git"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": ""
   },
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/eva-org/youdao-eva-plugin/issues"
-  },
-  "homepage": "https://github.com/eva-org/youdao-eva-plugin#readme",
   "dependencies": {
-    "axios": "^0.21.1"
+    "axios": "^0.24.0"
+  },
+  "engines": {
+    "node": ">=10"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
+    "rollup": "^2.63.0",
     "rollup-plugin-babel": "^3.0.4",
-    "rollup-plugin-commonjs": "^9.1.3",
-    "rollup-plugin-json": "^2.3.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-node-builtins": "^2.1.2",
-    "rollup-plugin-node-globals": "^1.2.0",
-    "rollup-plugin-node-resolve": "^3.3.0"
+    "rollup-plugin-node-globals": "^1.4.0",
+    "rollup-plugin-node-resolve": "^5.2.0"
   }
 }

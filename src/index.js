@@ -1,4 +1,9 @@
-import axios from 'axios'
+const axios = require('axios')
+const queryStr = process.argv[2]
+const path = require('path')
+const config = require(path.join(__dirname, '../config.json'))
+const appKey = config.appKey
+const appSecret = config.appSecret
 
 const md5 = (str) => {
   const cr = require('crypto')
@@ -11,15 +16,15 @@ const md5 = (str) => {
 const buildLine = (title, subTitle = '', action = () => {}) => {
   return {
     title,
-    subTitle,
+    subtitle: subTitle,
+    arg: title,
     action
   }
 }
 
 let timeout
-let appKey, appSecret
 
-function getData({query, utils: {logger}, clipboard}) {
+function getData (query) {
   if (timeout) clearTimeout(timeout)
   return new Promise(resolve => {
     timeout = setTimeout(() => {
@@ -36,10 +41,10 @@ function getData({query, utils: {logger}, clipboard}) {
           return resultList
         }
 
-        const {basic, translation: [translate]} = res.data
+        const { basic, translation: [translate] } = res.data
         // 查词成功
         if (basic) {
-          const {explains, phonetic} = basic
+          const { explains, phonetic } = basic
           if (phonetic) {
             resultList.push(buildLine(translate, `[${phonetic}]`, () => {
               clipboard.writeText(translate)
@@ -58,9 +63,7 @@ function getData({query, utils: {logger}, clipboard}) {
             return resolve(resultList)
           }
           // 翻译成功
-          resultList.push(buildLine(translate, query, () => {
-            clipboard.writeText(translate)
-          }))
+          resultList.push(buildLine(translate, query))
         }
         resolve(resultList)
       })
@@ -68,20 +71,17 @@ function getData({query, utils: {logger}, clipboard}) {
   })
 }
 
-// 存入剪切板 windows
-const pbcopyWin = (data) => {
-  require('child_process').spawn('clip').stdin.end(util.inspect(data.replace('\n', '\r\n')))
+let incrementNumber = 0
+const getIncrementNumber = () => {
+  incrementNumber++
+  if (incrementNumber > 99999) incrementNumber = 0
+  return incrementNumber
 }
-module.exports = {
-  name: 'YouDao',
-  quick: 'yd',
-  icon: '',
-  init() {
-    const config = require('./config.json')
-    appKey = config.appKey
-    appSecret = config.appSecret
-  },
-  query: (pluginContext) => {
-    return getData(pluginContext)
-  }
-}
+/**
+ * 获取uuid
+ * 时间戳-随机字符串-99999以内的自增
+ */
+const generateUUID = () => `${Date.now()}-${(((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)}-${getIncrementNumber()}`
+getData(queryStr).then(res => {
+  console.log(JSON.stringify({items: res}))
+})
