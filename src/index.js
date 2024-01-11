@@ -86,7 +86,7 @@ module.exports = {
       }, null, 2))
       console.log('请修改 config.json 配置 AppKey 和 AppSecret')
     } else {
-      const config = fs.readdirSync('./config.json')
+      const config = fs.readFileSync('./config.json', 'utf8')
       appKey = config.appKey
       appSecret = config.appSecret
       if (!appKey || !appSecret) {
