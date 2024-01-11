@@ -1,4 +1,5 @@
 import axios from 'axios'
+import fs from 'fs'
 
 const md5 = (str) => {
   const cr = require('crypto')
@@ -19,7 +20,7 @@ const buildLine = (title, subTitle = '', action = () => {}) => {
 let timeout
 let appKey, appSecret
 
-function getData({query, utils: {logger}, clipboard}) {
+function getData({query, utils: {logger, buildLine}, clipboard}) {
   if (timeout) clearTimeout(timeout)
   return new Promise(resolve => {
     timeout = setTimeout(() => {
@@ -77,9 +78,21 @@ module.exports = {
   quick: 'yd',
   icon: '',
   init() {
-    const config = require('./config.json')
-    appKey = config.appKey
-    appSecret = config.appSecret
+    // 先检查 config.json 是否存在
+    if (!fs.existsSync('./config.json')) {
+      fs.writeFileSync('./config.json', JSON.stringify({
+        appKey: '',
+        appSecret: ''
+      }, null, 2))
+      console.log('请修改 config.json 配置 AppKey 和 AppSecret')
+    } else {
+      const config = fs.readdirSync('./config.json')
+      appKey = config.appKey
+      appSecret = config.appSecret
+      if (!appKey || !appSecret) {
+        console.log('请修改 config.json 配置 AppKey 和 AppSecret')
+      }
+    }
   },
   query: (pluginContext) => {
     return getData(pluginContext)
